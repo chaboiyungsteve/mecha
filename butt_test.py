@@ -11,4 +11,4 @@ GPIO.setup(4, GPIO.IN, buttSignal = GPIO.PUD_DOWN)
 
 while True:
     if(GPIO.input(4) ==1):
-        print(“Button 1 pressed”)
+        print(“Button pressed”)
