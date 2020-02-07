@@ -7,7 +7,7 @@ GPIO.setmode(GPIO.BCM)
 #setup GPIO using Board numbering
 #GPIO.setmode(GPIO.BOARD)
 
-GPIO.setup(4, GPIO.IN, buttSignal = GPIO.PUD_DOWN)
+GPIO.setup(4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 while True:
     if (GPIO.input(4) == 1):
