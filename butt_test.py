@@ -27,9 +27,7 @@ while (game == True):
         time.sleep(ledClock)
         if (GPIO.input(4) == 1):
             GPIO.output(i, GPIO.HIGH)
-            break
-        break
-    game = False
+            game = False
 
 
 GPIO.cleanup()
