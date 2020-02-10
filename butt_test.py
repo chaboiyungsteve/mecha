@@ -32,7 +32,7 @@ while (game == True and button == 0):
     i = i+1
     if i == 25:
         i = 18
-    if button == 0:
+    if button == 1:
         break
 
         # while (game == True and GPIO.input(4) == 0):
