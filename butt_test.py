@@ -33,6 +33,7 @@ while (game == True and button == 0):
     if i == 25:
         i = 18
     if GPIO.input(4) == 1:
+        game = False
         break
 
         # while (game == True and GPIO.input(4) == 0):
@@ -44,6 +45,3 @@ while (game == True and button == 0):
         #         if (GPIO.input(4) == 1):
         #             GPIO.output(i, GPIO.HIGH)
         #             game = False
-
-
-GPIO.cleanup()
