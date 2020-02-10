@@ -24,7 +24,7 @@ i = 18
 if button == 1:
     game = False
 
-while (game == True and button == 0):
+while (game == True):
     GPIO.output(i, GPIO.HIGH)
     time.sleep(ledClock)
     GPIO.output(i, GPIO.LOW)
@@ -34,14 +34,3 @@ while (game == True and button == 0):
         i = 18
     if GPIO.input(4) == 1:
         game = False
-        break
-
-        # while (game == True and GPIO.input(4) == 0):
-        #     for i in range(18, 25):
-        #         GPIO.output(i, GPIO.HIGH)
-        #         time.sleep(ledClock)
-        #         GPIO.output(i, GPIO.LOW)
-        #         time.sleep(ledClock)
-        #         if (GPIO.input(4) == 1):
-        #             GPIO.output(i, GPIO.HIGH)
-        #             game = False
