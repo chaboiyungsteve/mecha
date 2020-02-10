@@ -32,9 +32,4 @@ while True:
         break
         GPIO.output(i, GPIO.HIGH)
 
-
-# while True:
-#     if (GPIO.input(4) == 1):
-#         print("dd")
-#         time.sleep(.1)
-#         GPIO.output(18, GPIO.HIGH)
+GPIO.cleanup()
