@@ -21,8 +21,8 @@ game = True
 button = GPIO.input(4)
 i = 18
 
-if button == 1:
-    game = False
+# if button == 1:
+#     game = False
 
 while (game == True):
     GPIO.output(i, GPIO.HIGH)
