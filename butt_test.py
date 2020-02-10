@@ -31,5 +31,4 @@ while True:
     if (GPIO.input(4) == 1):
         break
         GPIO.output(i, GPIO.HIGH)
-
-GPIO.cleanup()
+    GPIO.cleanup()
