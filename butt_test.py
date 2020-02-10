@@ -5,7 +5,8 @@ import time
 GPIO.setmode(GPIO.BCM)
 
 # Button Pin Setup
-GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+# GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(4, GPIO.IN)
 
 # LED Pins Setup
 GPIO.setup(18, GPIO.OUT)
