@@ -19,26 +19,25 @@ GPIO.setup(24, GPIO.OUT)
 ledClock = .1
 game = True
 button = GPIO.input(4)
+i = 18
 
 while (game == True and button == 0):
-    i = 18
     GPIO.output(i, GPIO.HIGH)
     time.sleep(ledClock)
     GPIO.output(i, GPIO.LOW)
     time.sleep(ledClock)
     i = i+1
     if i == 24:
-        i = 18
 
-# while (game == True and GPIO.input(4) == 0):
-#     for i in range(18, 25):
-#         GPIO.output(i, GPIO.HIGH)
-#         time.sleep(ledClock)
-#         GPIO.output(i, GPIO.LOW)
-#         time.sleep(ledClock)
-#         if (GPIO.input(4) == 1):
-#             GPIO.output(i, GPIO.HIGH)
-#             game = False
+        # while (game == True and GPIO.input(4) == 0):
+        #     for i in range(18, 25):
+        #         GPIO.output(i, GPIO.HIGH)
+        #         time.sleep(ledClock)
+        #         GPIO.output(i, GPIO.LOW)
+        #         time.sleep(ledClock)
+        #         if (GPIO.input(4) == 1):
+        #             GPIO.output(i, GPIO.HIGH)
+        #             game = False
 
 
 GPIO.cleanup()
