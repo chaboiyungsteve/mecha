@@ -12,7 +12,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # LED Pins Setup
-GPIO.setup(18, GPIO.OUT, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(18, GPIO.OUT)
 
 while True:
     if (GPIO.input(4) == 1):
