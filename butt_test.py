@@ -30,6 +30,7 @@ while True:
         time.sleep(ledClock)
     if (GPIO.input(4) == 1):
         break
+    GPIO.output(i, GPIO.HIGH)
 
 
 # while True:
