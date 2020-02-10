@@ -24,6 +24,9 @@ i = 18
 # if button == 1:
 #     game = False
 
+if GPIO.input(4) == 1:
+    game = True
+
 while (game == True):
     GPIO.output(i, GPIO.HIGH)
     time.sleep(ledClock)
