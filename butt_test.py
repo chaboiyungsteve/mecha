@@ -29,6 +29,8 @@ while (game == True and button == 0):
     i = i+1
     if i == 25:
         i = 18
+    if button == 1:
+        game = False
 
         # while (game == True and GPIO.input(4) == 0):
         #     for i in range(18, 25):
