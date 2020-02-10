@@ -27,7 +27,8 @@ while (game == True and button == 0):
     GPIO.output(i, GPIO.LOW)
     time.sleep(ledClock)
     i = i+1
-    if i == 24:
+    if i == 25:
+        i = 18
 
         # while (game == True and GPIO.input(4) == 0):
         #     for i in range(18, 25):
