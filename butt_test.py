@@ -18,14 +18,11 @@ GPIO.setup(24, GPIO.OUT)
 
 ledClock = .1
 game = True
-button = GPIO.input(4)
 i = 18
 
-# if button == 1:
-#     game = False
 
-if GPIO.input(4) == 1:
-    game = True
+# if GPIO.input(4) == 1:
+#     game = True
 
 while (game == True):
     GPIO.output(i, GPIO.HIGH)
