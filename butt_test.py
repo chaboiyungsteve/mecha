@@ -19,7 +19,7 @@ GPIO.setup(24, GPIO.OUT)
 ledClock = .1
 game = True
 
-while (game == True):
+while (game == True & & GPIO.input(4) == 0):
     for i in range(18, 25):
         GPIO.output(i, GPIO.HIGH)
         time.sleep(ledClock)
