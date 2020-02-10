@@ -16,25 +16,26 @@ GPIO.setup(22, GPIO.OUT)
 GPIO.setup(23, GPIO.OUT)
 GPIO.setup(24, GPIO.OUT)
 
-ledClock = .1
-game = True
-i = 18
+while True:
+    ledClock = .1
+    game = True
+    i = 18
 
+    # if GPIO.input(4) == 1:
+    #     game = True
 
-# if GPIO.input(4) == 1:
-#     game = True
-
-while (game == True):
-    GPIO.output(i, GPIO.HIGH)
-    time.sleep(ledClock)
-    GPIO.output(i, GPIO.LOW)
-    time.sleep(ledClock)
-    i = i+1
-    if i == 25:
-        i = 18
-    if GPIO.input(4) == 1 and i == 21:
+    while (game == True):
         GPIO.output(i, GPIO.HIGH)
-        game = False
-print("bla")
+        time.sleep(ledClock)
+        GPIO.output(i, GPIO.LOW)
+        time.sleep(ledClock)
+        i = i+1
+        if i == 25:
+            i = 18
+        if GPIO.input(4) == 1 and i == 21:
+            GPIO.output(i, GPIO.HIGH)
+            game = False
+    print("You win")
+    time.sleep(3)
 # if GPIO.input(4) == 1:
 #     game = True
