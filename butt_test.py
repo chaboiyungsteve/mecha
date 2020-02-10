@@ -26,7 +26,7 @@ while True:
         time.sleep(ledClock)
         if (GPIO.input(4) == 1):
             GPIO.output(i, GPIO.HIGH)
-            break
+            False
 
 
 GPIO.cleanup()
