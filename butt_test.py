@@ -33,4 +33,5 @@ while (game == True):
     if i == 25:
         i = 18
     if GPIO.input(4) == 1:
+        GPIO.output(i, GPIO.HIGH)
         game = False
