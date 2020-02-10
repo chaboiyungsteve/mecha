@@ -36,4 +36,4 @@ while (game == True):
         GPIO.output(i, GPIO.HIGH)
         game = False
     if GPIO.input(4) == 1:
-    game = True
+        game = True
