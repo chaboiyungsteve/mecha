@@ -21,9 +21,6 @@ while True:
     game = True
     i = 18
 
-    # if GPIO.input(4) == 1:
-    #     game = True
-
     while (game == True):
         GPIO.output(i, GPIO.HIGH)
         time.sleep(ledClock)
@@ -40,5 +37,3 @@ while True:
     GPIO.output(21, GPIO.LOW)
 
     GPIO.cleanup()
-# if GPIO.input(4) == 1:
-#     game = True
