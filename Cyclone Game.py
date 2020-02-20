@@ -38,5 +38,7 @@ while True:
     print("You win")
     time.sleep(3)
     GPIO.output(21, GPIO.LOW)
+
+    GPIO.cleanup()
 # if GPIO.input(4) == 1:
 #     game = True
