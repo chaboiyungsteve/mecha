@@ -10,7 +10,7 @@ while True:
     lower_green = np.array([0, 0, 0])
     upper_green = np.array([255, 255, 255])
 
-    mask = cv2.inRange(hsv, lower_red, upper_red)
+    mask = cv2.inRange(hsv, lower_green, upper_green)
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
     cv2.imshow('frame', frame)
