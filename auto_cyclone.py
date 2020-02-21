@@ -7,10 +7,9 @@ while True:
     _, frame = cap.read()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     thresh = 40
-    targColor = [40, 217, 200]
 
-    lower_green = np.array(targColor-thresh)
-    upper_green = np.array(targColor+thresh)
+    lower_green = np.array([80, 255, 240])
+    upper_green = np.array([0, 177, 160])
 
     mask = cv2.inRange(hsv, lower_green, upper_green)
     res = cv2.bitwise_and(frame, frame, mask=mask)
