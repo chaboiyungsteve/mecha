@@ -8,7 +8,9 @@ while True:
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     lower_green = np.array([148,89,30])
-    upper_green = np.array([178,230,255])
+    # upper_green = np.array([178,230,255])
+    upper_green = np.array([148,89,30])
+
 
     mask = cv2.inRange(hsv, lower_green, upper_green)
     res = cv2.bitwise_and(frame, frame, mask=mask)
