@@ -6,7 +6,7 @@ cap = cv2.VideoCapture(0)
 while(1):
     _, frame = cap.read()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    thresh  = 40
+    thresh  = [40,40,40]
     targColor = [40,40,40]
     
     lower_red = np.array(targColor-thresh)
