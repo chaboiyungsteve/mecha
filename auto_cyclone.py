@@ -15,7 +15,8 @@ while True:
     lower_red = np.array([170,120,70])
     upper_red = np.array([180,255,255])
     mask2 = cv2.inRange(hsv,lower_red,upper_red)
-    res = cv2.bitwise_and(frame, frame, mask=mask1+mask2)
+    mask=mask1+mask2
+    res = cv2.bitwise_and(frame, frame, mask=mask)
 
     cv2.imshow('frame', frame)
     cv2.imshow('mask', mask)
