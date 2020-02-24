@@ -6,13 +6,15 @@ cap = cv2.VideoCapture(0)
 while True:
     _, frame = cap.read()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    thresh = 40
-    targColor = [40, 217, 200]
-
-    lower_green = np.array([41, 218, 201])
-    upper_green = np.array([40, 217, 200])
-
-    mask = cv2.inRange(hsv, lower_green, upper_green)
+    # Range for lower red
+    lower_red = np.array([0,120,70])
+    upper_red = np.array([10,255,255])
+    mask1 = cv2.inRange(hsv, lower_red, upper_red)
+ 
+    # Range for upper range
+    lower_red = np.array([170,120,70])
+    upper_red = np.array([180,255,255])
+    mask2 = cv2.inRange(hsv,lower_red,upper_red)
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
     cv2.imshow('frame', frame)
