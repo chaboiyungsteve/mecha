@@ -28,14 +28,14 @@ def limit(inputVal,limits):
 
 
 
-try:
-	fn = sys.argv[1]
-except:
-	fn = 0
+# try:
+# 	fn = sys.argv[1]
+# except:
+# 	fn = 0
 
 
 
-cap = cv2.VideoCapture(fn)
+cap = cv2.VideoCapture(0)
 
 
 cv2.namedWindow('image')
