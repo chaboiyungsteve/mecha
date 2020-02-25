@@ -1,5 +1,10 @@
 import cv2
 import numpy as np
+from picamera.array import PiRGBArray
+from picamera import picamera
+
+camera.PiCamera()
+camera.resolution = (400,300)
 
 cap = cv2.VideoCapture(0)
 
