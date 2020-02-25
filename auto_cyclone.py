@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from picamera.array import PiRGBArray
-from picamera import picamera
+from picamera import PiCamera
 
 camera.PiCamera()
 camera.resolution = (400,300)
