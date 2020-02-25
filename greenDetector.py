@@ -1,5 +1,5 @@
 # Python 2/3 compatibility
-from __future__ import print_function
+# from __future__ import print_function
 
 import cv2
 import numpy as np
