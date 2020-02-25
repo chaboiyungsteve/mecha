@@ -3,7 +3,7 @@ import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
-camera.PiCamera()
+camera = PiCamera()
 camera.resolution = (400,300)
 
 cap = cv2.VideoCapture(0)
