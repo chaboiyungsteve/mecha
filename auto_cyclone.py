@@ -3,13 +3,19 @@ import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
-camera = PiCamera()
-camera.resolution = (400,300)
-
 cap = cv2.VideoCapture(0)
+
+def rescale_frame(frame, percent=75):
+    width = int(frame.shape[1] * percent/ 100)
+    height = int(frame.shape[0] * percent/ 100)
+    dim = (width, height)
+    return cv2.resize(frame, dim, interpolation =cv2.INTER_AREA)    
 
 while True:
     _, frame = cap.read()
+    frame75 = rescale_frame(frame, percent=75)
+    cv2.imshow('frame75', frame75)
+
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # Range for lower red
     lower_red = np.array([0,120,70])
