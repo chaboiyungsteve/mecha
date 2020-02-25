@@ -13,8 +13,7 @@ def rescale_frame(frame, percent=75):
 
 while True:
     _, frame = cap.read()
-    frame75 = rescale_frame(frame, percent=75)
-    cv2.imshow('frame75', frame75)
+    frame = rescale_frame(frame, percent=75)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     # Range for lower red
