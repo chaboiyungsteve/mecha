@@ -1,11 +1,11 @@
 import cv2
 import numpy as np
-from picamera.array import PiRGBArray
-from picamera import PiCamera
 
 cap = cv2.VideoCapture(0)
 
-def rescale_frame(frame, percent=75):
+
+#function to resize displayed frame from camera
+def rescale_frame(frame, percent=50):
     width = int(frame.shape[1] * percent/ 100)
     height = int(frame.shape[0] * percent/ 100)
     dim = (width, height)
@@ -13,6 +13,8 @@ def rescale_frame(frame, percent=75):
 
 while True:
     _, frame = cap.read()
+
+    #call function to resize frame to 'percent'
     frame = rescale_frame(frame, percent=25)
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
