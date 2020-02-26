@@ -102,8 +102,9 @@ while True:
 
 
 			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+
 		
-			areas = 5
+			areas = 1
 			if cnts is not None:
 				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
@@ -112,7 +113,7 @@ while True:
 			#THIS IS THE BLOCK THAT DETECTS GREEN
 			try:	
 				for i,c in enumerate(cnts,0):
-				
+					print(cnts)
 					M = cv2.moments(c)
 					splotch[0][i] = int(M["m00"])
 
