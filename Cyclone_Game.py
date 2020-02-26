@@ -31,7 +31,7 @@ while True:
             i = 18
         if GPIO.input(4) == 1 and i == 21:
             GPIO.output(i, GPIO.HIGH)
-            # game = False
+            game = False
     print("You win")
     # time.sleep(3)
     # GPIO.output(21, GPIO.LOW)
