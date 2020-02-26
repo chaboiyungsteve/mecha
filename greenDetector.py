@@ -109,6 +109,7 @@ while True:
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
 			# loop over the contours
+			#THIS IS THE BLOCK THAT DETECTS GREEN
 			try:	
 				for i,c in enumerate(cnts,0):
 				
@@ -121,6 +122,7 @@ while True:
 				
 				original=vis.copy()
 				if max1>-1:
+					print(max1)
 					M = cv2.moments(cnts[max1])
 					cX = int(M["m10"] / M["m00"])
 					cY = int(M["m01"] / M["m00"])
@@ -143,7 +145,7 @@ while True:
 			cv2.imshow('image',np.hstack([imgBGR,thresh, visBGR])) #np.hstack([original, vis]))#np.hstack([thresh, gray2]))
 			
 			ch=cv2.waitKey(1)
-			print(ch)
+			# print(ch)
 
 			if ch == 27:
 				exitNow=True
