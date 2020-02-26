@@ -148,7 +148,7 @@ while True:
 			cv2.imshow('image',np.hstack([imgBGR,thresh, visBGR])) #np.hstack([original, vis]))#np.hstack([thresh, gray2]))
 			
 			ch=cv2.waitKey(1)
-			print(ch)
+			# print(ch)
 
 			if ch == 27:
 				exitNow=True
