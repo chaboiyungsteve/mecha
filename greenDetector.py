@@ -62,7 +62,7 @@ while True:
 		flag, imgInit = cap.read()
 
 		
-		imgBGR = cv2.resize(imgInit,(300, 300),cv2.INTER_AREA)
+		imgBGR = cv2.resize(imgInit,(100, 100),cv2.INTER_AREA)
 		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 
 		
 		while True:	
