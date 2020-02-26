@@ -106,7 +106,7 @@ while True:
 			areas = 5
 			if cnts is not None:
 				areas=int(len(cnts))
-				splotch = np.zeros((1,areas),dtype=np.uint8)
+			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
 			# loop over the contours
 			#THIS IS THE BLOCK THAT DETECTS GREEN
@@ -118,13 +118,13 @@ while True:
 
 				try:
 					max1=np.argmax(splotch)
-					print(max1)
+					# print(max1)
 				except:
 					max1=-1
 				
 				original=vis.copy()
 				if max1>-1:
-					print(max1)
+					# print(max1)
 					M = cv2.moments(cnts[max1])
 					cX = int(M["m10"] / M["m00"])
 					cY = int(M["m01"] / M["m00"])
