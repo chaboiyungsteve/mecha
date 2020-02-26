@@ -1,5 +1,5 @@
 # Python 2/3 compatibility
-# from __future__ import print_function
+from __future__ import print_function
 
 import cv2
 import numpy as np
@@ -28,14 +28,14 @@ def limit(inputVal,limits):
 
 
 
-# try:
-# 	fn = sys.argv[1]
-# except:
-# 	fn = 0
+try:
+	fn = sys.argv[1]
+except:
+	fn = 0
 
 
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(fn)
 
 
 cv2.namedWindow('image')
@@ -95,10 +95,10 @@ while True:
 			testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
 
 
-			# cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 		
 
-			areas=int(len(cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]))
+			areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
 			# loop over the contours
