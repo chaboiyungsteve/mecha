@@ -129,15 +129,15 @@ while True:
 
 
 					
-					# cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
-					# cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
-					# cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
-					# 	cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+					cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
+					cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
+					cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
+						cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 			except:
 				pass
 			
 			cc=(int(chosenColor[0][0][0]),int(chosenColor[0][0][1]),int(chosenColor[0][0][2]))
-			cv2.circle(imgBGR, (50, 50), 50, cc, -1)
+			# cv2.circle(imgBGR, (50, 50), 50, cc, -1)
 
 			visBGR=cv2.cvtColor(vis, cv2.COLOR_HSV2BGR) 
 			thresh = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
