@@ -33,7 +33,7 @@ while True:
             GPIO.output(i, GPIO.HIGH)
             game = False
     print("You win")
-    # time.sleep(3)
-    # GPIO.output(21, GPIO.LOW)
+    time.sleep(3)
+    GPIO.output(21, GPIO.LOW)
 
     GPIO.cleanup()
