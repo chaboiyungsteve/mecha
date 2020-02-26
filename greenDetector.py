@@ -115,8 +115,10 @@ while True:
 				
 					M = cv2.moments(c)
 					splotch[0][i] = int(M["m00"])
+
 				try:
 					max1=np.argmax(splotch)
+					print(max1)
 				except:
 					max1=-1
 				
@@ -145,7 +147,7 @@ while True:
 			cv2.imshow('image',np.hstack([imgBGR,thresh, visBGR])) #np.hstack([original, vis]))#np.hstack([thresh, gray2]))
 			
 			ch=cv2.waitKey(1)
-			# print(ch)
+			print(ch)
 
 			if ch == 27:
 				exitNow=True
