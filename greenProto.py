@@ -9,7 +9,7 @@ from difflib import SequenceMatcher
 import sys
 import RPi.GPIO as GPIO
 import time
-# import Cyclone_Game
+import Cyclone_Game
 
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
