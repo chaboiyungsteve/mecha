@@ -31,7 +31,7 @@ while True:
         i = i+1
         if i == 25:
             i = 18
-        if GPIO.output(5) == 1 and i == 21:
+        if GPIO.output(5) == 1:
             GPIO.output(i, GPIO.HIGH)
             game = False
    
