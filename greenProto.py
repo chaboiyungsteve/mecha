@@ -103,10 +103,9 @@ while True:
 		
 		flag, imgInit = cap.read()
 
-
 		#resize video output frame and convert BGR to HSV values
 		imgBGR = cv2.resize(imgInit,(200, 200),cv2.INTER_AREA)
-		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 	
+		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 
 
 		#Takes values set in GUI trackbars and assigns them to variables for openCV functions
 		hue = cv2.getTrackbarPos('Hue', 'image')
@@ -139,75 +138,75 @@ while True:
 		thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
 		testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
 
-		while seenGreen == False:
-			game()
 
 		cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
 		areas = 1
-		if cnts is not None:
-			seenGreen = True
-			exitNow = 1
-			areas=int(len(cnts))
-		splotch = np.zeros((1,areas),dtype=np.uint8)
-		
-		# loop over the contours
-		#THIS IS THE BLOCK THAT DETECTS GREEN
-		try:	
-			for i,c in enumerate(cnts,0):
-				print(cnts)
-				M = cv2.moments(c)
-				splotch[0][i] = int(M["m00"])
+		while seenGreen == False:
+			game()
+			if cnts is not None:
+				seenGreen = True
+				exitNow = 1
+				areas=int(len(cnts))
+			splotch = np.zeros((1,areas),dtype=np.uint8)
+			
+			# loop over the contours
+			#THIS IS THE BLOCK THAT DETECTS GREEN
+			try:	
+				for i,c in enumerate(cnts,0):
+					print(cnts)
+					M = cv2.moments(c)
+					splotch[0][i] = int(M["m00"])
 
-			try:
-				max1=np.argmax(splotch)
+				try:
+					max1=np.argmax(splotch)
+				except:
+					max1=-1
+				
+				original=vis.copy()
+				if max1>-1:
+					M = cv2.moments(cnts[max1])
+					cX = int(M["m10"] / M["m00"])
+					cY = int(M["m01"] / M["m00"])
+
+
+					
+					cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
+					cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
+					cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
+						cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 			except:
-				max1=-1
-			
-			original=vis.copy()
-			if max1>-1:
-				M = cv2.moments(cnts[max1])
-				cX = int(M["m10"] / M["m00"])
-				cY = int(M["m01"] / M["m00"])
-
-
-				
-				cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
-				cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
-				cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
-					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-		except:
-			pass
-			
-			cc=(int(chosenColor[0][0][0]),int(chosenColor[0][0][1]),int(chosenColor[0][0][2]))
-			# cv2.circle(imgBGR, (50, 50), 50, cc, -1)
-
-			visBGR=cv2.cvtColor(vis, cv2.COLOR_HSV2BGR) 
-			thresh = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
-			
-			cv2.imshow('image',np.hstack([imgBGR,thresh, visBGR])) #np.hstack([original, vis]))#np.hstack([thresh, gray2]))
-			
-			ch=cv2.waitKey(1)
-			# print(ch)
-
-			if ch == 27:
-				exitNow=True
-				break
-			
-			elif ch==112 and pause==0:
-				
-				pause=1
-				print("paused")
-		
-			elif ch==112 and pause ==1:
-				pause=0
-				print("unPaused")
-
-				break
-			elif pause==1:
 				pass
-			else:
-				break
+				
+				cc=(int(chosenColor[0][0][0]),int(chosenColor[0][0][1]),int(chosenColor[0][0][2]))
+				# cv2.circle(imgBGR, (50, 50), 50, cc, -1)
+
+				visBGR=cv2.cvtColor(vis, cv2.COLOR_HSV2BGR) 
+				thresh = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
+				
+				cv2.imshow('image',np.hstack([imgBGR,thresh, visBGR])) #np.hstack([original, vis]))#np.hstack([thresh, gray2]))
+				
+				ch=cv2.waitKey(1)
+				# print(ch)
+
+				if ch == 27:
+					exitNow=True
+					break
+				
+				elif ch==112 and pause==0:
+					
+					pause=1
+					print("paused")
+			
+				elif ch==112 and pause ==1:
+					pause=0
+					print("unPaused")
+
+					break
+				elif pause==1:
+					pass
+				else:
+					break
 	except KeyboardInterrupt:
 		raise
 	except cv2.error as e:
