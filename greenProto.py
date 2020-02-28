@@ -9,7 +9,7 @@ from difflib import SequenceMatcher
 import sys
 import RPi.GPIO as GPIO
 import time
-import Cyclone_Game
+import CG
 
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
@@ -95,7 +95,9 @@ while True:
 
 			areas = 1
 			if cnts is not None:
-				seenGreen = True
+				CG.win()
+			else:
+				CG.runGame()
 			
 				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
