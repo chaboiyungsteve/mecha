@@ -11,7 +11,12 @@ import cv2
 import numpy as np
 from difflib import SequenceMatcher
 import sys
+import RPi.GPIO as GPIO
 
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(5,GPIO.OUT)
+GPIO.output(5,GPIO.LOW)
 
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
@@ -105,6 +110,7 @@ while True:
 
 			areas = 1
 			if cnts is not None:
+				GPIO.output(5,GPIO.HIGH)
 				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
