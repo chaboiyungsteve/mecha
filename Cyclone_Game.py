@@ -6,6 +6,8 @@ GPIO.setmode(GPIO.BCM)
 
 # Button Pin Setup
 GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(5,GPIO.OUT)
+GPIO.output(5,GPIO.LOW)
 
 # LED Pins Setup
 GPIO.setup(18, GPIO.OUT)
