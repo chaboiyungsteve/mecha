@@ -10,6 +10,7 @@ import sys
 import RPi.GPIO as GPIO
 import time
 import CG
+import threading
 
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()

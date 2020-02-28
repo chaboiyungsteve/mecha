@@ -103,10 +103,8 @@ while True:
 
 			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
-			seenGreen = False
 			areas = 1
 			if cnts is not None:
-				seenGreen = True
 				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
