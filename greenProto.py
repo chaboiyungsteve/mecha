@@ -103,81 +103,82 @@ while True:
 		
 		flag, imgInit = cap.read()
 
+
 		#resize video output frame and convert BGR to HSV values
 		imgBGR = cv2.resize(imgInit,(200, 200),cv2.INTER_AREA)
 		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 
-		
+
 		while seenGreen == False:
 			game()	
 
-            #Takes values set in GUI trackbars and assigns them to variables for openCV functions
-			hue = cv2.getTrackbarPos('Hue', 'image')
-			sat = cv2.getTrackbarPos('Sat', 'image')
-			val = cv2.getTrackbarPos('Val', 'image')
-			
-	
-			lower=[hue,sat,val]
-			lower=np.array(lower, dtype="uint8")
-			lower2=[[[hue,sat,val]]]
-			lower2=np.array(lower2, dtype="uint8")
-			chosenColor = cv2.cvtColor(lower2, cv2.COLOR_HSV2BGR)##Tr
+		#Takes values set in GUI trackbars and assigns them to variables for openCV functions
+		hue = cv2.getTrackbarPos('Hue', 'image')
+		sat = cv2.getTrackbarPos('Sat', 'image')
+		val = cv2.getTrackbarPos('Val', 'image')
 		
 
-			upperBound=limit(lower+thrs/2,[[0,179],[0,255],[0,255]])
-			lowerBound=limit(lower-thrs/2,[[0,179],[0,255],[0,255]])
-			mask=np.uint8(cv2.inRange(img,lowerBound,upperBound))
+		lower=[hue,sat,val]
+		lower=np.array(lower, dtype="uint8")
+		lower2=[[[hue,sat,val]]]
+		lower2=np.array(lower2, dtype="uint8")
+		chosenColor = cv2.cvtColor(lower2, cv2.COLOR_HSV2BGR)##Tr
+	
+
+		upperBound=limit(lower+thrs/2,[[0,179],[0,255],[0,255]])
+		lowerBound=limit(lower-thrs/2,[[0,179],[0,255],[0,255]])
+		mask=np.uint8(cv2.inRange(img,lowerBound,upperBound))
 
 
-			vis = np.uint8(img.copy())
-			vis[mask==0]=(0,0,0)
-			
-			
-			gray2 = img[:,:,2] #only want black and white image
-			gray = vis[:,:,2]
+		vis = np.uint8(img.copy())
+		vis[mask==0]=(0,0,0)
+		
+		
+		gray2 = img[:,:,2] #only want black and white image
+		gray = vis[:,:,2]
 
-			blurred = cv2.GaussianBlur(gray, (filt, filt), 0)
+		blurred = cv2.GaussianBlur(gray, (filt, filt), 0)
 
-			thresholdValue = cv2.getTrackbarPos('filterThresh', 'image')
-			thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
-			testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
-
-
-			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
-
-			areas = 1
-			if cnts is not None:
-				seenGreen = True
-				exitNow = 1
-				areas=int(len(cnts))
-			splotch = np.zeros((1,areas),dtype=np.uint8)
-			
-			# loop over the contours
-			#THIS IS THE BLOCK THAT DETECTS GREEN
-			try:	
-				for i,c in enumerate(cnts,0):
-					print(cnts)
-					M = cv2.moments(c)
-					splotch[0][i] = int(M["m00"])
-
-				try:
-					max1=np.argmax(splotch)
-				except:
-					max1=-1
-				
-				original=vis.copy()
-				if max1>-1:
-					M = cv2.moments(cnts[max1])
-					cX = int(M["m10"] / M["m00"])
-					cY = int(M["m01"] / M["m00"])
+		thresholdValue = cv2.getTrackbarPos('filterThresh', 'image')
+		thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
+		testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
 
 
-					
-					cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
-					cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
-					cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
-						cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+		cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+
+		areas = 1
+		if cnts is not None:
+			seenGreen = True
+			exitNow = 1
+			areas=int(len(cnts))
+		splotch = np.zeros((1,areas),dtype=np.uint8)
+		
+		# loop over the contours
+		#THIS IS THE BLOCK THAT DETECTS GREEN
+		try:	
+			for i,c in enumerate(cnts,0):
+				print(cnts)
+				M = cv2.moments(c)
+				splotch[0][i] = int(M["m00"])
+
+			try:
+				max1=np.argmax(splotch)
 			except:
-				pass
+				max1=-1
+			
+			original=vis.copy()
+			if max1>-1:
+				M = cv2.moments(cnts[max1])
+				cX = int(M["m10"] / M["m00"])
+				cY = int(M["m01"] / M["m00"])
+
+
+				
+				cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
+				cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
+				cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
+					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+		except:
+			pass
 			
 			cc=(int(chosenColor[0][0][0]),int(chosenColor[0][0][1]),int(chosenColor[0][0][2]))
 			# cv2.circle(imgBGR, (50, 50), 50, cc, -1)
