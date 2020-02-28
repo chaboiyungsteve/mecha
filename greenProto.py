@@ -1,18 +1,55 @@
-#!/usr/bin/env python
-
-
-
-
+#greenDetector base code taken from https://github.com/jaro6946 and edited for our application
 
 # Python 2/3 compatibility
-from __future__ import print_function
+# from __future__ import print_function
 
 import cv2
 import numpy as np
 from difflib import SequenceMatcher
 import sys
+import RPi.GPIO as GPIO
+import time
 
+#FUNCTION THAT RUNS "Cyclone_Game.py" 
+def game():
+    # set up GPIO using BCM numbering
+    GPIO.setmode(GPIO.BCM)
 
+    # Button Pin Setup
+    GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+    # LED Pins Setup
+    GPIO.setup(18, GPIO.OUT)
+    GPIO.setup(19, GPIO.OUT)
+    GPIO.setup(20, GPIO.OUT)
+    GPIO.setup(21, GPIO.OUT)
+    GPIO.setup(22, GPIO.OUT)
+    GPIO.setup(23, GPIO.OUT)
+    GPIO.setup(24, GPIO.OUT)
+
+    while True:
+        ledClock = .1
+        game = True
+        i = 18
+
+        while (game == True):
+            GPIO.output(i, GPIO.HIGH)
+            time.sleep(ledClock)
+            GPIO.output(i, GPIO.LOW)
+            time.sleep(ledClock)
+            i = i+1
+            if i == 25:
+                i = 18
+            if GPIO.input(4) == 1 and i == 21:
+                GPIO.output(i, GPIO.HIGH)
+                game = False
+        print("You win")
+        time.sleep(3)
+        GPIO.output(21, GPIO.LOW)
+
+        GPIO.cleanup()
+
+#Other functions used in code
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
 
@@ -31,19 +68,16 @@ def limit(inputVal,limits):
 	return output
 
 
-
-
-
+#Set Camera I/O value
 try:
 	fn = sys.argv[1]
 except:
 	fn = 0
 
-
-
 cap = cv2.VideoCapture(fn)
 
 
+#Create GUI to set HSV values for filtering colors camera sees
 cv2.namedWindow('image')
 thrs=50
 cv2.createTrackbar('Hue', 'image', 61, 179, nothing)
@@ -51,30 +85,37 @@ cv2.createTrackbar('Sat', 'image', 235, 255, nothing)
 cv2.createTrackbar('Val', 'image', 255, 255, nothing)
 cv2.createTrackbar('filterThresh', 'image', 0, 100, nothing) 
 
- #sets how much to blur
+#sets how much to blur
 filt=39
 exitNow=0
 pause=0
+seenGreen = False
 
+#############################################################################
+#############################################################################
+                #Master while loop running all code
+#############################################################################
+#############################################################################
 while True:
+		
+	
 	try:
 		
 		flag, imgInit = cap.read()
 
-		
-		imgBGR = cv2.resize(imgInit,(100, 100),cv2.INTER_AREA)
+		#resize video output frame and convert BGR to HSV values
+		imgBGR = cv2.resize(imgInit,(200, 200),cv2.INTER_AREA)
 		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 
 		
-		while True:	
-			if exitNow==1:
-				break
+		while seenGreen == False:
+			game()	
 
+            #Takes values set in GUI trackbars and assigns them to variables for openCV functions
 			hue = cv2.getTrackbarPos('Hue', 'image')
 			sat = cv2.getTrackbarPos('Sat', 'image')
 			val = cv2.getTrackbarPos('Val', 'image')
 			
-			
-
+	
 			lower=[hue,sat,val]
 			lower=np.array(lower, dtype="uint8")
 			lower2=[[[hue,sat,val]]]
@@ -103,10 +144,10 @@ while True:
 
 			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
-			seenGreen = False
 			areas = 1
 			if cnts is not None:
 				seenGreen = True
+				exitNow = 1
 				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
@@ -175,5 +216,6 @@ while True:
 		if similar(str(e), " /home/pi/opencv-3.3.0/modules/imgproc/src/imgwarp.cpp:3483: error: (-215) ssize.width > 0 && ssize.height > 0 in function resize")>.8:
 			print("\n\n\n\n Your video appears to have ended\n\n\n")
 		break
+
 							
 cv2.destroyAllWindows()
