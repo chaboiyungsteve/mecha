@@ -44,6 +44,8 @@ def game():
 			i = i+1
 			if i == 25:
 				i = 18
+			if cnts is not None:
+				game == False
 			if GPIO.input(4) == 1 and i == 21:
 				GPIO.output(i, GPIO.HIGH)
 				game = False
@@ -133,11 +135,10 @@ while True:
 			thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
 			testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
 
-			game()
-
 			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
 			areas = 1
+			game()
 			if cnts is not None:
 				seenGreen = True
 			
