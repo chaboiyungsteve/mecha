@@ -106,10 +106,7 @@ while True:
 
 		#resize video output frame and convert BGR to HSV values
 		imgBGR = cv2.resize(imgInit,(200, 200),cv2.INTER_AREA)
-		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 
-
-		while seenGreen == False:
-			game()	
+		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 	
 
 		#Takes values set in GUI trackbars and assigns them to variables for openCV functions
 		hue = cv2.getTrackbarPos('Hue', 'image')
@@ -142,6 +139,8 @@ while True:
 		thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
 		testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
 
+		while seenGreen == False:
+			game()
 
 		cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
