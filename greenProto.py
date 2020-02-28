@@ -95,11 +95,11 @@ while True:
 
 			areas = 1
 			if cnts is not None:
+				areas=int(len(cnts))
 				CG.win()
 			else:
 				CG.runGame()
 			
-				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
 			# loop over the contours
