@@ -31,9 +31,16 @@ while True:
         i = i+1
         if i == 25:
             i = 18
-        if GPIO.input(4) == 1 and i == 21:
+        if GPIO.output(5) == 1 and i == 21:
             GPIO.output(i, GPIO.HIGH)
             game = False
+   
+   
+    GPIO.output(21, GPIO.HIGH)
+    time.sleep(ledClock)
+    GPIO.output(21, GPIO.LOW)
+    time.sleep(ledClock)
+    GPIO.output(21, GPIO.HIGH)        
     print("You win")
     time.sleep(3)
     GPIO.output(21, GPIO.LOW)
