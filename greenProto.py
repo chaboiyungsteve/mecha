@@ -1,55 +1,18 @@
-#greenDetector base code taken from https://github.com/jaro6946 and edited for our application
+#!/usr/bin/env python
+
+
+
+
 
 # Python 2/3 compatibility
-# from __future__ import print_function
+from __future__ import print_function
 
 import cv2
 import numpy as np
 from difflib import SequenceMatcher
 import sys
-import RPi.GPIO as GPIO
-import time
 
-#FUNCTION THAT RUNS "Cyclone_Game.py" 
-def game():
-    # set up GPIO using BCM numbering
-    GPIO.setmode(GPIO.BCM)
 
-    # Button Pin Setup
-    GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-    # LED Pins Setup
-    GPIO.setup(18, GPIO.OUT)
-    GPIO.setup(19, GPIO.OUT)
-    GPIO.setup(20, GPIO.OUT)
-    GPIO.setup(21, GPIO.OUT)
-    GPIO.setup(22, GPIO.OUT)
-    GPIO.setup(23, GPIO.OUT)
-    GPIO.setup(24, GPIO.OUT)
-
-    while True:
-        ledClock = .1
-        game = True
-        i = 18
-
-        while (game == True):
-            GPIO.output(i, GPIO.HIGH)
-            time.sleep(ledClock)
-            GPIO.output(i, GPIO.LOW)
-            time.sleep(ledClock)
-            i = i+1
-            if i == 25:
-                i = 18
-            if GPIO.input(4) == 1 and i == 21:
-                GPIO.output(i, GPIO.HIGH)
-                game = False
-        print("You win")
-        time.sleep(3)
-        GPIO.output(21, GPIO.LOW)
-
-        GPIO.cleanup()
-
-#Other functions used in code
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
 
@@ -68,16 +31,19 @@ def limit(inputVal,limits):
 	return output
 
 
-#Set Camera I/O value
+
+
+
 try:
 	fn = sys.argv[1]
 except:
 	fn = 0
 
+
+
 cap = cv2.VideoCapture(fn)
 
 
-#Create GUI to set HSV values for filtering colors camera sees
 cv2.namedWindow('image')
 thrs=50
 cv2.createTrackbar('Hue', 'image', 61, 179, nothing)
@@ -85,98 +51,92 @@ cv2.createTrackbar('Sat', 'image', 235, 255, nothing)
 cv2.createTrackbar('Val', 'image', 255, 255, nothing)
 cv2.createTrackbar('filterThresh', 'image', 0, 100, nothing) 
 
-#sets how much to blur
+ #sets how much to blur
 filt=39
 exitNow=0
 pause=0
-seenGreen = False
 
-#############################################################################
-#############################################################################
-                #Master while loop running all code
-#############################################################################
-#############################################################################
 while True:
-		
-	
 	try:
 		
 		flag, imgInit = cap.read()
 
-		#resize video output frame and convert BGR to HSV values
-		imgBGR = cv2.resize(imgInit,(200, 200),cv2.INTER_AREA)
+		
+		imgBGR = cv2.resize(imgInit,(100, 100),cv2.INTER_AREA)
 		img=cv2.cvtColor(imgBGR, cv2.COLOR_BGR2HSV) 
-
-		#Takes values set in GUI trackbars and assigns them to variables for openCV functions
-		hue = cv2.getTrackbarPos('Hue', 'image')
-		sat = cv2.getTrackbarPos('Sat', 'image')
-		val = cv2.getTrackbarPos('Val', 'image')
 		
+		while True:	
+			if exitNow==1:
+				break
 
-		lower=[hue,sat,val]
-		lower=np.array(lower, dtype="uint8")
-		lower2=[[[hue,sat,val]]]
-		lower2=np.array(lower2, dtype="uint8")
-		chosenColor = cv2.cvtColor(lower2, cv2.COLOR_HSV2BGR)##Tr
-	
-
-		upperBound=limit(lower+thrs/2,[[0,179],[0,255],[0,255]])
-		lowerBound=limit(lower-thrs/2,[[0,179],[0,255],[0,255]])
-		mask=np.uint8(cv2.inRange(img,lowerBound,upperBound))
-
-
-		vis = np.uint8(img.copy())
-		vis[mask==0]=(0,0,0)
-		
-		
-		gray2 = img[:,:,2] #only want black and white image
-		gray = vis[:,:,2]
-
-		blurred = cv2.GaussianBlur(gray, (filt, filt), 0)
-
-		thresholdValue = cv2.getTrackbarPos('filterThresh', 'image')
-		thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
-		testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
-
-
-		cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
-
-		areas = 1
-		# while seenGreen == False:
-		# 	game()
-		if cnts is not None:
-			seenGreen = True
-			exitNow = 1
-			areas=int(len(cnts))
-		splotch = np.zeros((1,areas),dtype=np.uint8)
-		
-		# loop over the contours
-		#THIS IS THE BLOCK THAT DETECTS GREEN
-		try:	
-			for i,c in enumerate(cnts,0):
-				print(cnts)
-				M = cv2.moments(c)
-				splotch[0][i] = int(M["m00"])
-
-			try:
-				max1=np.argmax(splotch)
-			except:
-				max1=-1
+			hue = cv2.getTrackbarPos('Hue', 'image')
+			sat = cv2.getTrackbarPos('Sat', 'image')
+			val = cv2.getTrackbarPos('Val', 'image')
 			
-			original=vis.copy()
-			if max1>-1:
-				M = cv2.moments(cnts[max1])
-				cX = int(M["m10"] / M["m00"])
-				cY = int(M["m01"] / M["m00"])
+			
+
+			lower=[hue,sat,val]
+			lower=np.array(lower, dtype="uint8")
+			lower2=[[[hue,sat,val]]]
+			lower2=np.array(lower2, dtype="uint8")
+			chosenColor = cv2.cvtColor(lower2, cv2.COLOR_HSV2BGR)##Tr
+		
+
+			upperBound=limit(lower+thrs/2,[[0,179],[0,255],[0,255]])
+			lowerBound=limit(lower-thrs/2,[[0,179],[0,255],[0,255]])
+			mask=np.uint8(cv2.inRange(img,lowerBound,upperBound))
 
 
+			vis = np.uint8(img.copy())
+			vis[mask==0]=(0,0,0)
+			
+			
+			gray2 = img[:,:,2] #only want black and white image
+			gray = vis[:,:,2]
+
+			blurred = cv2.GaussianBlur(gray, (filt, filt), 0)
+
+			thresholdValue = cv2.getTrackbarPos('filterThresh', 'image')
+			thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
+			testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
+
+
+			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
+
+			seenGreen = False
+			areas = 1
+			if cnts is not None:
+				seenGreen = True
+				areas=int(len(cnts))
+			splotch = np.zeros((1,areas),dtype=np.uint8)
+			
+			# loop over the contours
+			#THIS IS THE BLOCK THAT DETECTS GREEN
+			try:	
+				for i,c in enumerate(cnts,0):
+					print(cnts)
+					M = cv2.moments(c)
+					splotch[0][i] = int(M["m00"])
+
+				try:
+					max1=np.argmax(splotch)
+				except:
+					max1=-1
 				
-				cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
-				cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
-				cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
-					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-		except:
-			pass
+				original=vis.copy()
+				if max1>-1:
+					M = cv2.moments(cnts[max1])
+					cX = int(M["m10"] / M["m00"])
+					cY = int(M["m01"] / M["m00"])
+
+
+					
+					cv2.drawContours(vis, [cnts[max1]], -1, (0, 255, 0), 2)
+					cv2.circle(vis, (cX, cY), 7, (255, 255, 255), -1)
+					cv2.putText(vis, "Green Light", (cX - 20, cY - 20),
+						cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+			except:
+				pass
 			
 			cc=(int(chosenColor[0][0][0]),int(chosenColor[0][0][1]),int(chosenColor[0][0][2]))
 			# cv2.circle(imgBGR, (50, 50), 50, cc, -1)
@@ -215,6 +175,5 @@ while True:
 		if similar(str(e), " /home/pi/opencv-3.3.0/modules/imgproc/src/imgwarp.cpp:3483: error: (-215) ssize.width > 0 && ssize.height > 0 in function resize")>.8:
 			print("\n\n\n\n Your video appears to have ended\n\n\n")
 		break
-
 							
 cv2.destroyAllWindows()
