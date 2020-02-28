@@ -21,7 +21,7 @@ def runGame():
     ledClock = .1
     # game = True
 
-    for i in range(18,26):
+    for i in range(18,25):
         GPIO.output(i, GPIO.HIGH)
         time.sleep(ledClock)
         GPIO.output(i, GPIO.LOW)
