@@ -11,7 +11,47 @@ import cv2
 import numpy as np
 from difflib import SequenceMatcher
 import sys
+import RPi.GPIO as GPIO
+import time
 
+def game():
+
+	# set up GPIO using BCM numbering
+	GPIO.setmode(GPIO.BCM)
+
+	# Button Pin Setup
+	GPIO.setup(4, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+	# LED Pins Setup
+	GPIO.setup(18, GPIO.OUT)
+	GPIO.setup(19, GPIO.OUT)
+	GPIO.setup(20, GPIO.OUT)
+	GPIO.setup(21, GPIO.OUT)
+	GPIO.setup(22, GPIO.OUT)
+	GPIO.setup(23, GPIO.OUT)
+	GPIO.setup(24, GPIO.OUT)
+
+	while True:
+		ledClock = .1
+		game = True
+		i = 18
+
+		while (game == True):
+			GPIO.output(i, GPIO.HIGH)
+			time.sleep(ledClock)
+			GPIO.output(i, GPIO.LOW)
+			time.sleep(ledClock)
+			i = i+1
+			if i == 25:
+				i = 18
+			if GPIO.input(4) == 1 and i == 21:
+				GPIO.output(i, GPIO.HIGH)
+				game = False
+		print("You win")
+		time.sleep(3)
+		GPIO.output(21, GPIO.LOW)
+
+		GPIO.cleanup()
 
 def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
@@ -30,19 +70,12 @@ def limit(inputVal,limits):
 
 	return output
 
-
-
-
-
 try:
 	fn = sys.argv[1]
 except:
 	fn = 0
 
-
-
 cap = cv2.VideoCapture(fn)
-
 
 cv2.namedWindow('image')
 thrs=50
@@ -100,13 +133,14 @@ while True:
 			thresh = cv2.threshold(blurred, thresholdValue, 255, cv2.THRESH_BINARY)[1]
 			testArray=[(lower-thrs/2).tolist(),(lower+thrs/2).tolist(),lowerBound.tolist(),upperBound.tolist(),thresholdValue]
 
+			game()
 
 			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
-			seenGreen = False
 			areas = 1
 			if cnts is not None:
 				seenGreen = True
+			
 				areas=int(len(cnts))
 			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
