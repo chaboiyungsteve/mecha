@@ -138,7 +138,7 @@ while True:
 			cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[1]
 
 			areas = 1
-			# game()
+			game()
 			if cnts is not None:
 				seenGreen = True
 			
