@@ -97,10 +97,11 @@ while True:
 			if cnts is not None:
 				areas=int(len(cnts))
 				CG.win()
-			else:
+			splotch = np.zeros((1,areas),dtype=np.uint8)
+
+			if cnts is None:
 				CG.runGame()
 			
-			splotch = np.zeros((1,areas),dtype=np.uint8)
 			
 			# loop over the contours
 			#THIS IS THE BLOCK THAT DETECTS GREEN
